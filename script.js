@@ -85,6 +85,8 @@ document.getElementById('update-btn').addEventListener('click', async () => {
 
   const btn = document.getElementById('update-btn');
   btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = 'Оновлення...';
 
   try {
     await ZOHO.CRM.API.updateRecord({
@@ -94,13 +96,13 @@ document.getElementById('update-btn').addEventListener('click', async () => {
         Currency_Rate: currentNbuRate,
       },
     });
-    alert('Курс оновлено!');
     console.log(`[LOG] Курс оновлено в Угоді: ${currentNbuRate}`);
   } catch (err) {
     alert('Помилка при оновленні!');
     console.error(err);
   } finally {
     btn.disabled = false;
+    btn.textContent = originalText;
   }
 });
 
