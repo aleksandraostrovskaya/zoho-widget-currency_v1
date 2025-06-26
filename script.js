@@ -10,7 +10,7 @@ async function loadTranslations(lang) {
       return;
     }
 
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (dict[key]) {
         el.textContent = dict[key];
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const langSelect = document.getElementById('lang-select');
   if (langSelect) {
     langSelect.value = currentLang;
-    langSelect.addEventListener('change', (e) => {
+    langSelect.addEventListener('change', e => {
       currentLang = e.target.value;
       localStorage.setItem('lang', currentLang);
       loadTranslations(currentLang);
@@ -53,6 +53,7 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
     if (!res.ok) throw new Error('Не вдалося отримати курс НБУ');
     const nbuData = await res.json();
     currentNbuRate = nbuData[0].rate;
+    console.log(`[LOG] Отримано курс НБУ: ${currentNbuRate}`);
     document.getElementById('nbu-rate').textContent = currentNbuRate;
 
     const response = await ZOHO.CRM.API.getRecord({
@@ -80,6 +81,7 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
 
 document.getElementById('update-btn').addEventListener('click', async () => {
   if (!dealId || currentNbuRate === null) return;
+  console.log('[LOG] Натиснуто кнопку "Записати курс в Угоду"');
 
   const btn = document.getElementById('update-btn');
   btn.disabled = true;
@@ -93,6 +95,7 @@ document.getElementById('update-btn').addEventListener('click', async () => {
       },
     });
     alert('Курс оновлено!');
+    console.log(`[LOG] Курс оновлено в Угоді: ${currentNbuRate}`);
   } catch (err) {
     alert('Помилка при оновленні!');
     console.error(err);
