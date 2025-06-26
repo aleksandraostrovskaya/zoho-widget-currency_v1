@@ -1,3 +1,41 @@
+let currentLang = 'ua';
+
+async function loadTranslations(lang) {
+  try {
+    const res = await fetch('lang.json');
+    const translations = await res.json();
+    const dict = translations[lang];
+    if (!dict) {
+      console.warn(`Translations for language "${lang}" not found.`);
+      return;
+    }
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) {
+        el.textContent = dict[key];
+      }
+    });
+  } catch (err) {
+    console.error('Translation load error:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  currentLang = localStorage.getItem('lang') || 'ua';
+  loadTranslations(currentLang);
+
+  const langSelect = document.getElementById('lang-select');
+  if (langSelect) {
+    langSelect.value = currentLang;
+    langSelect.addEventListener('change', (e) => {
+      currentLang = e.target.value;
+      localStorage.setItem('lang', currentLang);
+      loadTranslations(currentLang);
+    });
+  }
+});
+
 let dealId = null;
 let currentNbuRate = null;
 
