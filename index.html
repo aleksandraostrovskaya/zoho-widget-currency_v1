@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Currency Rate</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+	<div id="app">
+		<h3 id="title"></h3>
+		<p><span data-i18n="nbu_rate">Курс НБУ:</span> <strong id="nbu-rate">-</strong></p>
+		<p><span data-i18n="deal_rate">Курс в угоді:</span> <strong id="deal-rate">-</strong></p>
+		<p><span data-i18n="difference">Різниця:</span> <strong id="diff">-</strong></p>
+		<button id="update-btn" style="display:none;" data-i18n="update">Записати курс в Угоду</button>
+		<p id="log" style="color: red;"></p>
+	</div>
+	<script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
+	<script src="script.js"></script>
+
+</body>
+
+</html>
