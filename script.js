@@ -1,5 +1,6 @@
 let currentLang = 'ua';
 let i18n = {};
+const NBU_RATE_KEY = 'last_nbu_rate';
 
 async function loadTranslations(lang) {
   try {
@@ -48,6 +49,11 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
     document.getElementById('log').textContent = 'Не знайдено ID угоди.';
     return;
   }
+  const savedRate = localStorage.getItem(NBU_RATE_KEY);
+  if (savedRate) {
+    document.getElementById('nbu-rate').textContent = savedRate;
+    console.log(`[LOG] Встановлено збережений курс НБУ: ${savedRate}`);
+  }
 
   try {
     const res = await fetch(
@@ -56,6 +62,8 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
     if (!res.ok) throw new Error('Не вдалося отримати курс НБУ');
     const nbuData = await res.json();
     currentNbuRate = nbuData[0].rate;
+    localStorage.setItem(NBU_RATE_KEY, currentNbuRate);
+
     console.log(`[LOG] Отримано курс НБУ: ${currentNbuRate}`);
     document.getElementById('nbu-rate').textContent = currentNbuRate;
 
