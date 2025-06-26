@@ -1,16 +1,18 @@
 {
   "ua": {
+    "title": "Курс валют",
     "nbu_rate": "Курс НБУ",
     "deal_rate": "Курс в угоді",
     "difference": "Різниця",
     "update": "Записати курс в Угоду",
-		"updating": "Оновлення..."
+    "updating": "Оновлення..."
   },
   "en": {
+    "title": "Currency Rate",
     "nbu_rate": "NBU Rate",
     "deal_rate": "Deal Rate",
     "difference": "Difference",
     "update": "Update Deal Rate",
-		"updating": "Updating..."
+    "updating": "Updating..."
   }
 }
