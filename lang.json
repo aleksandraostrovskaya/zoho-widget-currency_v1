@@ -3,12 +3,14 @@
     "nbu_rate": "Курс НБУ",
     "deal_rate": "Курс в угоді",
     "difference": "Різниця",
-    "update": "Записати курс в Угоду"
+    "update": "Записати курс в Угоду",
+		"updating": "Оновлення..."
   },
   "en": {
     "nbu_rate": "NBU Rate",
     "deal_rate": "Deal Rate",
     "difference": "Difference",
-    "update": "Update Deal Rate"
+    "update": "Update Deal Rate",
+		"updating": "Updating..."
   }
 }

@@ -1,4 +1,5 @@
 let currentLang = 'ua';
+let i18n = {};
 
 async function loadTranslations(lang) {
   try {
@@ -9,6 +10,8 @@ async function loadTranslations(lang) {
       console.warn(`Translations for language "${lang}" not found.`);
       return;
     }
+
+    i18n = dict;
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -86,7 +89,7 @@ document.getElementById('update-btn').addEventListener('click', async () => {
   const btn = document.getElementById('update-btn');
   btn.disabled = true;
   const originalText = btn.textContent;
-  btn.textContent = 'Оновлення...';
+  btn.textContent = i18n.updating || 'Оновлення...';
 
   try {
     await ZOHO.CRM.API.updateRecord({
