@@ -41,6 +41,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function getZohoFormattedDate() {
+  const date = new Date();
+  const pad = num => String(num).padStart(2, '0');
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+
+  const timezoneOffset = -date.getTimezoneOffset();
+  const offsetSign = timezoneOffset >= 0 ? '+' : '-';
+  const offsetHours = pad(Math.floor(Math.abs(timezoneOffset) / 60));
+  const offsetMinutes = pad(Math.abs(timezoneOffset) % 60);
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}${offsetHours}:${offsetMinutes}`;
+}
+
 let dealId = null;
 let currentNbuRate = null;
 
@@ -97,14 +116,12 @@ async function createRateHistoryRecord(dealRate, currentRate) {
   const difference = ((dealRate / currentRate - 1) * 100).toFixed(1);
 
   try {
-    const now = new Date().toISOString();
-
     const response = await ZOHO.CRM.API.insertRecord({
       Entity: 'Exchange_Rate_History',
       APIData: {
         Deal: { id: dealId },
         Rate: currentRate,
-        Date: now,
+        Date: getZohoFormattedDate(),
         Rate_Source: 'НБУ',
         Difference: difference,
       },
@@ -112,12 +129,12 @@ async function createRateHistoryRecord(dealRate, currentRate) {
     });
 
     console.log('[LOG] Відповідь після створення запису:', response);
-     if (response.data?.[0]?.code !== 'SUCCESS') {
+    if (response.data?.[0]?.code !== 'SUCCESS') {
       console.error('Помилка створення запису:', response);
     }
   } catch (err) {
     console.error('Помилка при створенні історії:', err);
-     alert('Помилка при створенні історії: ' + JSON.stringify(err));
+    alert('Помилка при створенні історії: ' + JSON.stringify(err));
   }
 }
 
