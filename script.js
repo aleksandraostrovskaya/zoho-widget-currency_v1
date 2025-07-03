@@ -84,11 +84,35 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
     } else {
       document.getElementById('update-btn').style.display = 'none';
     }
+    await loadHistoryTable();
   } catch (error) {
     document.getElementById('log').textContent = error.message;
     console.error(error);
   }
 });
+
+async function createRateHistoryRecord(dealRate, currentRate) {
+  const difference = ((dealRate / currentRate - 1) * 100).toFixed(1);
+
+  try {
+    const now = new Date().toISOString();
+
+    const response = await ZOHO.CRM.API.createRecord({
+      Entity: 'Exchange_Rate_History',
+      APIData: {
+        Deal: dealId,
+        Rate: currentRate,
+        Date: now,
+        Rate_Source: 'НБУ',
+        Difference: difference,
+      },
+    });
+
+    console.log(`[LOG] Запис історії створено: ${response.data}`);
+  } catch (err) {
+    console.error('Помилка при створенні історії:', err);
+  }
+}
 
 document.getElementById('update-btn').addEventListener('click', async () => {
   if (!dealId || currentNbuRate === null) return;
@@ -108,6 +132,9 @@ document.getElementById('update-btn').addEventListener('click', async () => {
       },
     });
     console.log(`[LOG] Курс оновлено в Угоді: ${currentNbuRate}`);
+
+    await createRateHistoryRecord(currentNbuRate, currentNbuRate);
+    await loadHistoryTable();
   } catch (err) {
     alert('Помилка при оновленні!');
     console.error(err);
@@ -116,5 +143,46 @@ document.getElementById('update-btn').addEventListener('click', async () => {
     btn.textContent = originalText;
   }
 });
+
+async function loadHistoryTable() {
+  try {
+    const response = await ZOHO.CRM.API.searchRecords({
+      Entity: 'Exchange_Rate_History',
+      Criteria: `(Deal:equals:${dealId})`,
+      sort_by: 'Date',
+      sort_order: 'desc',
+      page: 1,
+      per_page: 5,
+    });
+
+    const historyList = response.data || [];
+
+    const tbody = document.getElementById('history-body');
+    tbody.innerHTML = '';
+
+    for (let record of historyList) {
+      const date = new Date(record.Date);
+      const formattedDate = date.toLocaleString('uk-UA', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${formattedDate}</td>
+        <td>${record.Rate}</td>
+        <td>${record['Difference_%']}%</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    console.log('[LOG] Історію завантажено');
+  } catch (err) {
+    console.error('Помилка при завантаженні історії:', err);
+  }
+}
 
 ZOHO.embeddedApp.init();
