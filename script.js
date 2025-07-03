@@ -117,6 +117,7 @@ async function createRateHistoryRecord(dealRate, currentRate) {
     }
   } catch (err) {
     console.error('Помилка при створенні історії:', err);
+     alert('Помилка при створенні історії: ' + JSON.stringify(err));
   }
 }
 
