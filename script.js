@@ -174,7 +174,7 @@ async function loadHistoryTable() {
       tr.innerHTML = `
         <td>${formattedDate}</td>
         <td>${record.Rate}</td>
-        <td>${record['Difference_%']}%</td>
+        <td>${record[Difference]}%</td>
       `;
       tbody.appendChild(tr);
     }
