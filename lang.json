@@ -5,7 +5,11 @@
     "deal_rate": "Курс в угоді",
     "difference": "Різниця",
     "update": "Записати курс в Угоду",
-    "updating": "Оновлення..."
+    "updating": "Оновлення...",
+    "history_title": "Історія курсів",
+    "history_date": "Дата",
+    "history_rate": "Курс",
+    "history_diff": "Різниця, %"
   },
   "en": {
     "title": "Currency Rate",
@@ -13,6 +17,10 @@
     "deal_rate": "Deal Rate",
     "difference": "Difference",
     "update": "Update Deal Rate",
-    "updating": "Updating..."
+    "updating": "Updating...",
+    "history_title": "Exchange Rate History",
+    "history_date": "Date",
+    "history_rate": "Rate",
+    "history_diff": "Difference, %"
   }
 }
