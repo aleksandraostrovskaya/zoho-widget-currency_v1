@@ -1,6 +1,7 @@
 let currentLang = 'ua';
 let i18n = {};
 const NBU_RATE_KEY = 'last_nbu_rate';
+let dealRate = 0;
 
 async function loadTranslations(lang) {
   try {
@@ -71,7 +72,7 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
       Entity: 'Deals',
       RecordID: dealId,
     });
-    const dealRate = parseFloat(response.data?.[0]?.Currency_Rate || 0);
+    dealRate = parseFloat(response.data?.[0]?.Currency_Rate || 0);
     document.getElementById('deal-rate').textContent = dealRate;
 
     const diff = ((dealRate / currentNbuRate - 1) * 100).toFixed(1);
@@ -134,7 +135,7 @@ document.getElementById('update-btn').addEventListener('click', async () => {
     });
     console.log(`[LOG] Курс оновлено в Угоді: ${currentNbuRate}`);
 
-    await createRateHistoryRecord(currentNbuRate, currentNbuRate);
+    await createRateHistoryRecord(dealRate, currentNbuRate);
     await loadHistoryTable();
   } catch (err) {
     alert('Помилка при оновленні!');
