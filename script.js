@@ -147,14 +147,15 @@ document.getElementById('update-btn').addEventListener('click', async () => {
 
 async function loadHistoryTable() {
   try {
-    const response = await ZOHO.CRM.API.searchRecords({
-      Entity: 'Exchange_Rate_History',
-      Criteria: `(Deal:equals:${dealId})`,
-      sort_by: 'Date',
-      sort_order: 'desc',
-      page: 1,
-      per_page: 5,
-    });
+    const response = await ZOHO.CRM.API.searchRecord(
+      {
+        Entity: 'Exchange_Rate_History',
+        Type: 'criteria',
+        Query: `(Deal:equals:${dealId})`,
+      },
+      1,
+      5
+    );
 
     const historyList = response.data || [];
 
@@ -175,7 +176,7 @@ async function loadHistoryTable() {
       tr.innerHTML = `
         <td>${formattedDate}</td>
         <td>${record.Rate}</td>
-        <td>${record[Difference]}%</td>
+        <td>${record.Difference}%</td>
       `;
       tbody.appendChild(tr);
     }
