@@ -102,7 +102,7 @@ async function createRateHistoryRecord(dealRate, currentRate) {
     const response = await ZOHO.CRM.API.insertRecord({
       Entity: 'Exchange_Rate_History',
       APIData: {
-        Deal: dealId,
+        Deal: { id: dealId },
         Rate: currentNbuRate,
         Date: now,
         Rate_Source: 'НБУ',
