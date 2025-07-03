@@ -103,7 +103,7 @@ async function createRateHistoryRecord(dealRate, currentRate) {
       Entity: 'Exchange_Rate_History',
       APIData: {
         Deal: { id: dealId },
-        Rate: currentNbuRate,
+        Rate: currentRate,
         Date: now,
         Rate_Source: 'НБУ',
         Difference: difference,
@@ -112,6 +112,9 @@ async function createRateHistoryRecord(dealRate, currentRate) {
     });
 
     console.log('[LOG] Відповідь після створення запису:', response);
+     if (response.data?.[0]?.code !== 'SUCCESS') {
+      console.error('Помилка створення запису:', response);
+    }
   } catch (err) {
     console.error('Помилка при створенні історії:', err);
   }
