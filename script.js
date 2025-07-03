@@ -93,6 +93,7 @@ ZOHO.embeddedApp.on('PageLoad', async function (data) {
 });
 
 async function createRateHistoryRecord(dealRate, currentRate) {
+  console.log('[LOG] Створюємо запис історії курсів:', dealRate, currentRate);
   const difference = ((dealRate / currentRate - 1) * 100).toFixed(1);
 
   try {
@@ -110,7 +111,7 @@ async function createRateHistoryRecord(dealRate, currentRate) {
       Trigger: [],
     });
 
-    console.log(`[LOG] Запис історії створено: ${response.data}`);
+    console.log('[LOG] Відповідь після створення запису:', response);
   } catch (err) {
     console.error('Помилка при створенні історії:', err);
   }
