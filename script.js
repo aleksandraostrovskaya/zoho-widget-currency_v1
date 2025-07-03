@@ -97,15 +97,16 @@ async function createRateHistoryRecord(dealRate, currentRate) {
   try {
     const now = new Date().toISOString();
 
-    const response = await ZOHO.CRM.API.createRecord({
+    const response = await ZOHO.CRM.API.insertRecord({
       Entity: 'Exchange_Rate_History',
       APIData: {
         Deal: dealId,
-        Rate: currentRate,
+        Rate: currentNbuRate,
         Date: now,
         Rate_Source: 'НБУ',
         Difference: difference,
       },
+      Trigger: [],
     });
 
     console.log(`[LOG] Запис історії створено: ${response.data}`);
